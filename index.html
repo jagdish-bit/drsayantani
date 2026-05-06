@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="config.js"></script>
+<script>
+/* Inject SEO + CSS colours from config */
+(function(){
+  const C = CONFIG;
+  document.title = C.seo.title;
+  const head = document.head;
+  const m = (n,c) => { const el=document.createElement('meta'); el.name=n; el.content=c; head.appendChild(el); };
+  m('description', C.seo.description);
+  m('keywords',    C.seo.keywords);
+  const col = C.colors;
+  const s = document.createElement('style');
+  s.textContent = `:root{--p:${col.primary};--pd:${col.dark};--pm:${col.mid};--light:${col.light};--accent:${col.accent};--td:${col.textDark};--tm:${col.textMid};--tmut:${col.textMuted}}`;
+  head.appendChild(s);
+})();
+</script>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-brand">
+      <span class="nav-brand-name" id="nav-name"></span>
+      <span class="nav-brand-cred" id="nav-cred"></span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#booking" class="nav-cta">Book Appointment</a>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about"        onclick="closeMenu()">About</a>
+  <a href="#services"     onclick="closeMenu()">Services</a>
+  <a href="#testimonials" onclick="closeMenu()">Reviews</a>
+  <a href="#booking"      onclick="closeMenu()">Book Appointment</a>
+  <a href="#contact"      onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner container">
+    <div>
+      <div class="hero-pill"><span class="hero-pill-dot"></span><span id="hero-tag"></span></div>
+      <h1 class="hero-h1" id="hero-h1"></h1>
+      <p class="hero-deg" id="hero-deg"></p>
+      <p class="hero-desc" id="hero-desc"></p>
+      <div class="hero-btns">
+        <a href="#booking" class="btn-white">📅 Book Appointment</a>
+        <button class="btn-ghost" onclick="openChat()">💬 AI Derm Consult</button>
+      </div>
+      <div class="hero-stats" id="hero-stats"></div>
+    </div>
+    <div>
+      <div class="hero-card">
+        <!--
+          PHOTO SHOWS HERE AUTOMATICALLY
+          Just put photo.jpg inside the images/ folder
+          and upload to GitHub — done.
+        -->
+        <div class="doc-photo-wrap" id="hero-photo-wrap">
+          <img id="hero-img" src="" alt="" style="display:none">
+          <div class="initials" id="hero-init"></div>
+        </div>
+        <div class="card-name"   id="hero-card-name"></div>
+        <div class="card-spec"   id="hero-card-spec"></div>
+        <div class="card-badges" id="hero-badges"></div>
+        <div class="rating-row">
+          <span class="stars"       id="hero-stars"></span>
+          <span class="rating-text" id="hero-rating"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="bg-light">
+  <div class="container">
+    <div class="fade-up">
+      <p class="eyebrow">What We Treat</p>
+      <h2 class="section-title">Comprehensive <em>Dermatology</em> &amp; Aesthetic Services</h2>
+      <p class="section-sub">From medical conditions to cosmetic enhancements — evidence-based, personalised care for every skin concern.</p>
+    </div>
+    <div class="services-grid" id="services-grid"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="fade-up">
+        <div class="portrait-card">
+          <!--
+            SAME PHOTO appears here too — automatically.
+            No extra setup needed.
+          -->
+          <div class="about-photo-wrap" id="about-photo-wrap">
+            <img id="about-img" src="" alt="" style="display:none">
+            <div class="initials" id="about-init"></div>
+          </div>
+          <div class="portrait-name" id="portrait-name"></div>
+          <div class="portrait-spec" id="portrait-spec"></div>
+          <div class="affil-badges"  id="affil-badges"></div>
+          <div class="about-stats"   id="about-stats"></div>
+        </div>
+      </div>
+      <div class="about-bio fade-up d1">
+        <p class="eyebrow">About the Doctor</p>
+        <h2 class="section-title">Where Science Meets <em>Compassionate</em> Skin Care</h2>
+        <div class="rule"></div>
+        <div id="bio-text"></div>
+        <div class="expertise-grid" id="expertise-grid"></div>
+        <div class="mem-list" id="mem-list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" class="bg-light">
+  <div class="container">
+    <div class="fade-up">
+      <p class="eyebrow">Patient Stories</p>
+      <h2 class="section-title">What Our Patients <em>Say</em></h2>
+      <p class="section-sub">Real experiences from real patients. Reviews sourced from Practo, Google, and Justdial.</p>
+    </div>
+    <div class="reviews-grid" id="reviews-grid"></div>
+    <div style="margin-top:4rem" class="fade-up">
+      <h3 class="video-heading">Video Testimonials</h3>
+      <div class="video-grid" id="video-grid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="booking" class="booking-wrap">
+  <div class="container">
+    <div class="booking-grid">
+      <div class="booking-info fade-up">
+        <p class="eyebrow">Schedule a Visit</p>
+        <h2 class="section-title">Book Your <em>Appointment</em></h2>
+        <p class="booking-desc">Take the first step toward healthier skin. Our team will confirm within 24 hours via WhatsApp or call.</p>
+        <div class="info-chips" id="booking-chips"></div>
+      </div>
+      <div class="fade-up d1">
+        <div class="form-card">
+          <div class="step-bar">
+            <div class="step active" id="sb1"></div>
+            <div class="step"        id="sb2"></div>
+            <div class="step"        id="sb3"></div>
+          </div>
+          <!-- Step 1 -->
+          <div class="f-page active" id="fp1">
+            <p class="f-title">Patient Information</p>
+            <div class="f-group">
+              <label class="f-label">Full Name</label>
+              <input class="f-input" id="f-name" type="text" placeholder="e.g. Ananya Bose">
+            </div>
+            <div class="f-row">
+              <div class="f-group">
+                <label class="f-label">Age</label>
+                <input class="f-input" id="f-age" type="number" placeholder="28">
+              </div>
+              <div class="f-group">
+                <label class="f-label">Gender</label>
+                <select class="f-select" id="f-gender">
+                  <option value="">Select</option>
+                  <option>Female</option><option>Male</option><option>Other</option>
+                </select>
+              </div>
+            </div>
+            <button class="f-btn f-btn-primary" onclick="goStep(2)">Continue →</button>
+          </div>
+          <!-- Step 2 -->
+          <div class="f-page" id="fp2">
+            <p class="f-title">Your Concern</p>
+            <div class="f-group">
+              <label class="f-label">Select Primary Concern</label>
+              <div class="concern-grid" id="concern-grid"></div>
+            </div>
+            <div class="f-group" style="margin-top:1rem">
+              <label class="f-label">Brief Description (Optional)</label>
+              <textarea class="f-textarea" id="f-desc" placeholder="Describe your skin concern briefly…"></textarea>
+            </div>
+            <button class="f-btn f-btn-primary" onclick="goStep(3)">Continue →</button>
+            <button class="f-btn f-btn-back"    onclick="goStep(1)">← Back</button>
+          </div>
+          <!-- Step 3 -->
+          <div class="f-page" id="fp3">
+            <p class="f-title">Contact &amp; Preferred Time</p>
+            <div class="f-group">
+              <label class="f-label">Phone Number</label>
+              <input class="f-input" id="f-phone" type="tel" placeholder="+91 98765 43210">
+            </div>
+            <div class="f-group">
+              <label class="f-label">Email Address</label>
+              <input class="f-input" id="f-email" type="email" placeholder="you@example.com">
+            </div>
+            <div class="f-row">
+              <div class="f-group">
+                <label class="f-label">Preferred Date</label>
+                <input class="f-input" id="f-date" type="date">
+              </div>
+              <div class="f-group">
+                <label class="f-label">Preferred Time</label>
+                <select class="f-select" id="f-time">
+                  <option value="">Select Slot</option>
+                </select>
+              </div>
+            </div>
+            <div class="f-group">
+              <label class="f-label">Preferred Clinic</label>
+              <select class="f-select" id="f-clinic"></select>
+            </div>
+            <button class="f-btn f-btn-primary" onclick="submitForm()">Confirm Appointment ✓</button>
+            <button class="f-btn f-btn-back"    onclick="goStep(2)">← Back</button>
+          </div>
+          <!-- Success -->
+          <div class="f-success" id="f-success">
+            <div class="f-check">✅</div>
+            <h3>Appointment Requested!</h3>
+            <p>Dr. Chakraborty's team will confirm your slot within 24 hours.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="fade-up">
+      <p class="eyebrow">Find Us</p>
+      <h2 class="section-title">Clinic Locations &amp; <em>Contact</em></h2>
+    </div>
+    <div class="contact-grid" style="margin-top:3rem">
+      <div class="fade-up">
+        <div class="map-wrap">
+          <iframe id="map-frame" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="ILS Hospitals Dum Dum"></iframe>
+        </div>
+      </div>
+      <div class="fade-up d1">
+        <div class="contact-info" id="contact-info"></div>
+        <div class="hours-card" style="margin-top:1rem">
+          <div class="hours-title">🕐 OPD Hours — ILS Hospitals</div>
+          <div id="opd-hours"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-name"       id="footer-name"></div>
+        <p class="footer-sub"          id="footer-sub"></p>
+        <p class="footer-disclaimer">This website is for informational purposes only and does not constitute medical advice. Consult Dr. Chakraborty directly for diagnosis and treatment. All reviews are voluntarily submitted public testimonials.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Quick Links</div>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
+          <li><a href="#booking">Book Appointment</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Specialties</div>
+        <ul class="footer-links" id="footer-specs"></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span id="footer-copy"></span>
+      <span id="footer-tag"></span>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="fab-stack">
+  <a href="#booking" class="fab fab-book" title="Book Appointment">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <span class="fab-pulse"></span>
+  </a>
+  <button class="fab fab-ai" onclick="toggleChat()" title="AI Derm Consult">
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      <circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/>
+      <circle cx="12" cy="10" r="1" fill="currentColor" stroke="none"/>
+      <circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/>
+    </svg>
+  </button>
+</div>
+
+<!-- AI CHAT POPUP -->
+<div class="ai-popup" id="ai-popup">
+  <div class="ai-header">
+    <div class="ai-header-left">
+      <div class="ai-av">🩺</div>
+      <div>
+        <div class="ai-name">Derm-Consult AI</div>
+        <div class="ai-status"><span class="ai-dot"></span>Online Now</div>
+      </div>
+    </div>
+    <button class="ai-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="ai-messages" id="ai-msgs">
+    <div class="msg bot">
+      <div class="msg-bubble" id="ai-welcome"></div>
+      <div class="msg-time">Just now</div>
+    </div>
+  </div>
+  <div class="ai-chips" id="ai-chips"></div>
+  <div class="ai-input-row">
+    <input class="ai-input" id="ai-input" type="text" placeholder="Ask about your skin concern…" onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="ai-send" onclick="sendMsg()">Send</button>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM BAR -->
+<div class="bottom-bar">
+  <a id="bb-call" class="bb-btn bb-call" href="#">📞 Call Now</a>
+  <a class="bb-btn bb-book" href="#booking">📅 Book Now</a>
+</div>
+
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const C = CONFIG;
+const D = C.doctor;
+
+/* ════════════════════════════════════════════
+   PHOTO LOADER
+   ─────────────
+   Loads photo from CONFIG.doctorPhoto.
+   If file missing or broken → shows initials.
+   File must be named: photo.jpg
+   Folder must be: images/
+   Full path: images/photo.jpg
+════════════════════════════════════════════ */
+function loadPhoto(imgEl, wrapEl, initEl, src, alt, initials) {
+  initEl.textContent = initials;
+  if (!src || src.trim() === '') return;
+  const img = new Image();
+  img.onload = () => {
+    imgEl.src = src;
+    imgEl.alt = alt;
+    imgEl.style.display = 'block';
+    initEl.style.display = 'none';
+  };
+  img.onerror = () => {
+    // File not found or broken → initials stay visible
+    imgEl.style.display = 'none';
+    initEl.style.display = '';
+  };
+  img.src = src;
+}
+
+/* ═══ RENDER NAV ═══════════════════════════ */
+function renderNav() {
+  $('nav-name').textContent = D.name;
+  $('nav-cred').textContent = D.degrees;
+}
+
+/* ═══ RENDER HERO ══════════════════════════ */
+function renderHero() {
+  $('hero-tag').textContent  = D.tagline;
+  $('hero-h1').innerHTML     = `Dr. <em>${D.firstName}</em><br>${D.lastName}`;
+  $('hero-deg').textContent  = D.degrees;
+  $('hero-desc').textContent = D.heroDesc;
+
+  loadPhoto($('hero-img'), $('hero-photo-wrap'), $('hero-init'), C.doctorPhoto, `Photo of ${D.name}`, D.initials);
+
+  $('hero-card-name').textContent = D.name;
+  $('hero-card-spec').textContent = D.specialties;
+
+  const badges = ['MBBS','MD Dermatology','IADVL','ILS Hospitals','NRS Medical College'];
+  $('hero-badges').innerHTML = badges.map(b => `<span class="cbadge">${b}</span>`).join('');
+
+  const r = parseFloat(D.rating);
+  $('hero-stars').textContent  = '★'.repeat(Math.floor(r)) + (r%1>=.5?'½':'') + '☆'.repeat(5-Math.ceil(r));
+  $('hero-rating').textContent = `${D.rating} / 5 · ${D.reviewCount} Reviews`;
+
+  $('hero-stats').innerHTML = [
+    {n:D.experience, l:'Years Experience'},
+    {n:D.rating+'★', l:'Patient Rating'},
+    {n:D.clinics,    l:'Clinic Locations'},
+  ].map(s=>`<div><div class="stat-num">${s.n}</div><div class="stat-lbl">${s.l}</div></div>`).join('');
+}
+
+/* ═══ RENDER MARQUEE ════════════════════════ */
+function renderMarquee() {
+  const items = [...C.marquee, ...C.marquee];
+  $('marquee').innerHTML = items.map(t=>`<span class="marquee-item">${t}</span>`).join('');
+}
+
+/* ═══ RENDER SERVICES ══════════════════════ */
+function renderServices() {
+  const delays=['','d1','d2','d3','d1','d2'];
+  $('services-grid').innerHTML = C.services.map((s,i)=>`
+    <div class="service-card fade-up ${delays[i]||''}">
+      <div class="service-icon">${s.icon}</div>
+      <h3 class="service-title">${s.title}</h3>
+      <p class="service-desc">${s.desc}</p>
+      <ul class="service-list">${s.items.map(it=>`<li>${it}</li>`).join('')}</ul>
+    </div>`).join('');
+}
+
+/* ═══ RENDER ABOUT ══════════════════════════ */
+function renderAbout() {
+  loadPhoto($('about-img'), $('about-photo-wrap'), $('about-init'), C.doctorPhoto, `Portrait of ${D.name}`, D.initials);
+
+  $('portrait-name').textContent = D.name;
+  $('portrait-spec').textContent = D.degreesShort + ' · Dermatosurgeon';
+
+  $('affil-badges').innerHTML = C.affiliations.map(a=>`<span class="affil-badge">${a}</span>`).join('');
+
+  $('about-stats').innerHTML = [
+    {n:D.experience, l:'Yrs Experience'},
+    {n:D.clinics,    l:'Clinics'},
+    {n:'4',          l:'Memberships'},
+    {n:D.reviewCount,l:'Reviews'},
+  ].map(s=>`<div class="about-stat"><div class="about-stat-num">${s.n}</div><div class="about-stat-lbl">${s.l}</div></div>`).join('');
+
+  $('bio-text').innerHTML     = C.bio.map(p=>`<p>${p}</p>`).join('');
+  $('expertise-grid').innerHTML = C.expertise.map(e=>`<div class="expertise-item"><div class="expertise-dot"></div>${e}</div>`).join('');
+  $('mem-list').innerHTML     = C.memberships.map(m=>`<span class="mem-tag">${m}</span>`).join('');
+}
+
+/* ═══ RENDER REVIEWS ════════════════════════ */
+function renderReviews() {
+  const dl=['','d1','d2'];
+  $('reviews-grid').innerHTML = C.reviews.map((r,i)=>`
+    <div class="review-card fade-up ${dl[i%3]}">
+      <div class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+      <p class="review-text">"${r.text}"</p>
+      <div class="review-author">
+        <div class="review-av">${r.initials}</div>
+        <div><div class="review-name">${r.name}</div><div class="review-src">${r.source}</div></div>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══ RENDER VIDEOS ═════════════════════════ */
+function renderVideos() {
+  const grads=['linear-gradient(135deg,#0a3555,#1565C0)','linear-gradient(135deg,#1a5276,#0F4C75)','linear-gradient(135deg,#0d3b5c,#1976D2)'];
+  $('video-grid').innerHTML = C.videos.map((v,i)=>{
+    if(v.videoUrl) return `
+      <div class="video-card">
+        <iframe src="${v.videoUrl}" allow="autoplay;encrypted-media" allowfullscreen title="${v.patient}"></iframe>
+        <div class="video-label"><div class="video-patient">${v.patient}</div><div class="video-treatment">${v.treatment}</div></div>
+      </div>`;
+    return `
+      <div class="video-card" onclick="alertVid(${i})">
+        <div class="video-placeholder" style="background:${grads[i%3]}"><div class="video-play">▶</div></div>
+        <div class="video-label"><div class="video-patient">${v.patient}</div><div class="video-treatment">${v.treatment}</div></div>
+      </div>`;
+  }).join('');
+}
+function alertVid(i){
+  const v=C.videos[i];
+  alert(`📹 ${v.patient} — ${v.treatment}\n\nTo add real video:\n1. Open config.js\n2. Find videos[${i}]\n3. Set videoUrl to YouTube embed URL\n   e.g. "https://www.youtube.com/embed/VIDEO_ID"`);
+}
+
+/* ═══ RENDER BOOKING ════════════════════════ */
+function renderBooking() {
+  const p = C.primaryClinic;
+  $('booking-chips').innerHTML = `
+    <div class="info-chip"><div class="chip-icon">📍</div><div class="chip-body"><span class="chip-label">Primary Location</span>${p.name}<br>${p.address}<br><span style="opacity:.75;font-size:.75rem">${p.landmark}</span></div></div>
+    <div class="info-chip"><div class="chip-icon">📅</div><div class="chip-body"><span class="chip-label">OPD Days</span>${p.days} — ILS Hospitals</div></div>
+    <div class="info-chip"><div class="chip-icon">💬</div><div class="chip-body"><span class="chip-label">WhatsApp Booking</span>Quick confirmation available</div></div>`;
+
+  $('concern-grid').innerHTML = C.concerns.map(c=>`<span class="concern-chip" onclick="this.classList.toggle('on')">${c}</span>`).join('');
+  $('f-time').innerHTML = '<option value="">Select Slot</option>'+C.timeSlots.map(t=>`<option>${t}</option>`).join('');
+  $('f-clinic').innerHTML = C.bookingClinics.map(cl=>`<option>${cl}</option>`).join('');
+  const t=new Date(); t.setDate(t.getDate()+1);
+  $('f-date').min = t.toISOString().split('T')[0];
+}
+
+/* ═══ RENDER CONTACT ════════════════════════ */
+function renderContact() {
+  $('map-frame').src = C.mapUrl;
+  const p = C.primaryClinic;
+  $('contact-info').innerHTML = `
+    <div class="contact-card"><div class="cc-icon">📍</div><div><div class="cc-label">${p.name}</div><div class="cc-value">${p.address}<br><small style="color:var(--tmut)">${p.landmark}</small></div></div></div>
+    <div class="contact-card"><div class="cc-icon">🏥</div><div><div class="cc-label">Also Consulting At</div><div class="cc-value">${C.otherClinics.join('<br>')}</div></div></div>
+    <div class="contact-card"><div class="cc-icon">📞</div><div><div class="cc-label">Appointment Booking</div><div class="cc-value">Contact ILS Hospitals Dum Dum or use the booking form above.</div></div></div>`;
+  $('opd-hours').innerHTML = C.opdHours.map(h=>`<div class="hours-row"><span class="hours-day">${h.day}</span><span class="hours-time">${h.time}</span></div>`).join('');
+}
+
+/* ═══ RENDER FOOTER ═════════════════════════ */
+function renderFooter() {
+  $('footer-name').textContent = D.name;
+  $('footer-sub').textContent  = D.degrees + ' · ' + C.footer.tagline;
+  $('footer-copy').textContent = `© ${C.footer.year} ${D.name}. All rights reserved.`;
+  $('footer-tag').textContent  = 'ILS Hospitals, Kolkata';
+  $('footer-specs').innerHTML  = C.services.map(s=>`<li><a href="#services">${s.title}</a></li>`).join('');
+}
+
+/* ═══ RENDER AI CHAT ════════════════════════ */
+function renderChat() {
+  $('ai-welcome').textContent = `👋 Hi! Ask me about any skin or hair concern. I'll give guidance based on Dr. ${D.firstName}'s expertise.`;
+  $('ai-chips').innerHTML = [
+    ["I have acne and acne scars","Acne & Scars"],
+    ["I am losing a lot of hair","Hair Loss"],
+    ["I have pigmentation on my face","Pigmentation"],
+    ["Tell me about laser treatments","Lasers"],
+    ["What anti-aging options are there?","Anti-Aging"],
+  ].map(([q,l])=>`<span class="ai-chip" onclick="quickMsg('${q}')">${l}</span>`).join('');
+}
+
+/* ═══ RENDER MOBILE BAR ═════════════════════ */
+function renderMobile() { $('bb-call').href = `tel:${C.contact.phone}`; }
+
+/* ═══ INIT ALL ══════════════════════════════ */
+(function init(){
+  renderNav(); renderHero(); renderMarquee(); renderServices();
+  renderAbout(); renderReviews(); renderVideos(); renderBooking();
+  renderContact(); renderFooter(); renderChat(); renderMobile();
+})();
+
+/* ═══ SCROLL REVEAL ═════════════════════════ */
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target); } });
+},{threshold:.08});
+setTimeout(()=>document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el)),120);
+
+/* ═══ NAV SCROLL ════════════════════════════ */
+window.addEventListener('scroll',()=>$('nav').classList.toggle('scrolled',scrollY>24),{passive:true});
+
+/* ═══ MOBILE MENU ═══════════════════════════ */
+function toggleMenu(){ $('mobile-menu').classList.toggle('open'); }
+function closeMenu() { $('mobile-menu').classList.remove('open');  }
+
+/* ═══ BOOKING FORM ══════════════════════════ */
+let step=1;
+function goStep(n){
+  $(`fp${step}`).classList.remove('active');
+  $(`sb${step}`).classList.remove('active');
+  $(`sb${step}`).classList.add('done');
+  step=n;
+  if(n<3){$('sb3').classList.remove('done','active');}
+  if(n<2){$('sb2').classList.remove('done','active');}
+  $(`fp${step}`).classList.add('active');
+  $(`sb${step}`).classList.remove('done');
+  $(`sb${step}`).classList.add('active');
+}
+function submitForm(){
+  const phone=$('f-phone').value.trim(), email=$('f-email').value.trim();
+  if(!phone&&!email){ alert('Please enter your phone number or email.'); return; }
+  ['sb1','sb2','sb3'].forEach(id=>{$(id).classList.remove('active');$(id).classList.add('done');});
+  $('fp3').classList.remove('active');
+  $('f-success').style.display='block';
+}
+
+/* ═══ AI CHAT ═══════════════════════════════ */
+function toggleChat(){ $('ai-popup').classList.toggle('open'); }
+function openChat()  { $('ai-popup').classList.add('open');    }
+
+let leadShown=false;
+
+function getBotReply(txt){
+  const t=txt.toLowerCase();
+  for(const [,topic] of Object.entries(C.aiTopics)){
+    if(topic.keys.some(k=>t.includes(k))) return topic.reply;
+  }
+  return `Thank you for your query! I can help with:\n\n• **Acne** or acne scars\n• **Hair loss** or thinning\n• **Pigmentation** or melasma\n• **Vitiligo** or psoriasis\n• **Laser** treatments\n• **Anti-aging** options\n\nOr book a direct consultation using the form above.`;
+}
+
+function addMsg(text,who){
+  const box=$('ai-msgs');
+  const d=document.createElement('div'); d.className=`msg ${who}`;
+  const b=document.createElement('div'); b.className='msg-bubble';
+  b.innerHTML=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  const t=document.createElement('div'); t.className='msg-time';
+  t.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  d.appendChild(b); d.appendChild(t);
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+function showTyping(){
+  const box=$('ai-msgs');
+  const d=document.createElement('div'); d.className='msg bot'; d.id='typing';
+  d.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+function hideTyping(){ const el=$('typing'); if(el) el.remove(); }
+
+function showLead(){
+  if(leadShown) return; leadShown=true;
+  const box=$('ai-msgs');
+  const d=document.createElement('div'); d.className='msg bot';
+  d.innerHTML=`<div class="msg-bubble"><div class="lead-form">
+    <div class="lead-title">📋 Share your contact and Dr. Chakraborty's team will follow up within 24 hours:</div>
+    <input class="lead-input" id="lead-name"  type="text"  placeholder="Your name">
+    <input class="lead-input" id="lead-phone" type="tel"   placeholder="Phone / WhatsApp">
+    <input class="lead-input" id="lead-email" type="email" placeholder="Email (optional)">
+    <button class="lead-submit" onclick="submitLead()">Send Details →</button>
+  </div></div>`;
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+function submitLead(){
+  const name=document.getElementById('lead-name')?.value||'';
+  const phone=document.getElementById('lead-phone')?.value||'';
+  if(!phone){ alert('Please enter your phone number.'); return; }
+  addMsg(`✅ Thank you${name?', '+name:''}! Dr. Chakraborty's team will reach out within 24 hours on ${phone}.`,'bot');
+}
+function sendMsg(){
+  const inp=$('ai-input'), text=inp.value.trim(); if(!text) return;
+  inp.value='';
+  $('ai-chips').style.display='none';
+  addMsg(text,'user'); showTyping();
+  setTimeout(()=>{ hideTyping(); addMsg(getBotReply(text),'bot'); setTimeout(showLead,900); },1300);
+}
+function quickMsg(text){ $('ai-input').value=text; sendMsg(); }
+</script>
+
+</body>
+</html>
