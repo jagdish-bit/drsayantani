@@ -172,7 +172,7 @@ const CONFIG = {
      6. Copy ONLY the src="..." URL
      7. Paste it below replacing the current value
   ────────────────────────────────────────────────────── */
-  mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3682.623!2d88.3763!3d22.6316!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89dad1f6a9b87%3A0xd7b36c2d06c01c93!2sILS%20Hospitals%2C%20Dum%20Dum!5e0!3m2!1sen!2sin!4v1717000000000!5m2!1sen!2sin",
+  mapUrl: "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3682.7828701000926!2d88.417126!3d22.624582!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f89e19fdffba2b%3A0x5461c4ec9df3487c!2sILS%20Hospitals%2C%20Dumdum!5e0!3m2!1sen!2sin!4v1778046958314!5m2!1sen!2sin",
 
 
   /* ── PRIMARY CLINIC ────────────────────────────────── */
